@@ -1,0 +1,54 @@
+.orange-line {
+    height: 30px;
+    background-color: #FA7421;
+    width: 100vw;
+    position: relative; 
+    max-width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    margin-top: -1vw;
+}
+
+.blue-line {
+    background-color: #7C99FF;
+    height: 100px;
+    width: 100vw;
+    position: relative; 
+    max-width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    text-align: center;
+}
+
+.header {
+   display: flex;
+   flex-direction: column;
+}
+
+
+#pet-list {
+    padding: 50px;
+    display: inline-flex;
+    column-gap: 35px;
+    row-gap: 35px;
+    justify-content: space-around;
+
+
+}
+
+.new-pet {
+    height: 140px;
+    width: 240px;
+    border: solid 10px #FA7421;
+    background-color: white;
+    
+}
+
+.add-button {
+    height: 60px;
+    width: 60px;
+    border: none;
+    border-radius: 50px;
+    background-color: #FA7421;
+    display: block;
+}
