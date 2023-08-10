@@ -32,16 +32,13 @@
     column-gap: 35px;
     row-gap: 35px;
     justify-content: space-around;
-
-
 }
 
 .new-pet {
     height: 140px;
     width: 240px;
     border: solid 10px #FA7421;
-    background-color: white;
-    
+    background-color: white;    
 }
 
 .add-button {
