@@ -7,9 +7,13 @@ function renderPetList(pets) { // TODO: rename
     for(i = 0; i < pets.length; i++) {
         const pet = pets[i]
         const newPetCardElement = document.createElement("div") // TODO: rename
-        newPetCardElement.setAttribute("class","new-pet")
+        newPetCardElement.setAttribute("class","pet-card")
         newPetCardElement.setAttribute("id", pet.petId)
-        newPetCardElement.innerHTML = `Name: ${pet.petName}, Kind: ${pet.kind}, Added Date: ${pet.addedDate}`
+        newPetCardElement.innerHTML = `
+            <div class="pet-card-name">Name: ${pet.petName}</div> 
+            <div class="pet-card-kind">Kind: ${pet.kind}</div>
+            <div class="pet-card-date">Added Date: ${pet.addedDate}</div>
+        `
         displayedPets.appendChild(newPetCardElement)
 
         console.log(pet)

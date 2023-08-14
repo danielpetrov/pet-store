@@ -36,14 +36,15 @@
     margin-top: 50px;
 }
 
-.new-pet {
+.pet-card {
     height: 140px;
+    max-height: 140px;
     width: 240px;
+    max-width: 240px;
     border: solid 10px #FA7421;
     border-radius: 8px;
-    background-color: white;    
-    text-align: center;
-    
+    background-color: white;
+    padding: 10px;
 }
 
 .add-button {
