@@ -3,19 +3,44 @@ const displayedPets = document.getElementById("pet-list")
 console.log(displayedPets)
 
 
-function getPetInfo(pets) { // TODO: rename
+function renderPetList(pets) { // TODO: rename
     for(i = 0; i < pets.length; i++) {
         const pet = pets[i]
         const newPetCardElement = document.createElement("div") // TODO: rename
         newPetCardElement.setAttribute("class","new-pet")
-        newPetCardElement.setAttribute("id", pets[i].petId)
-        newPetCardElement.innerHTML = `Name: ${pets[i].petName}, Kind: ${pets[i].kind}, Added Date: ${pets[i].addedDate}`
+        newPetCardElement.setAttribute("id", pet.petId)
+        newPetCardElement.innerHTML = `Name: ${pet.petName}, Kind: ${pet.kind}, Added Date: ${pet.addedDate}`
         displayedPets.appendChild(newPetCardElement)
 
-        console.log(pets[i])
-        console.log(`Name: ${pets[i].petName}`)
-        console.log(`Kind: ${pets[i].kind}`)
-        console.log(`Added Date: ${pets[i].addedDate}`)        
+        console.log(pet)
+        console.log(`Name: ${pet.petName}`)
+        console.log(`Kind: ${pet.kind}`)
+        console.log(`Added Date: ${pet.addedDate}`)
+        
+        newPetCardElement.addEventListener('click', renderPetInfoModal)
     }
 }
-getPetInfo(petsMockData)
+
+function renderPetInfoModal() {
+    const popupPetInfoElement = document.querySelector('#popup-pet')
+
+    popupPetInfoElement.classList.add("open-popup-pet-window")
+
+    const closePetButton = document.createElement("button")
+    closePetButton.innerHTML = "×"
+    closePetButton.setAttribute("id", "close-pet-button")
+    closePetButton.setAttribute("class", "close-pet")
+    popupPetInfoElement.appendChild(closePetButton)
+    
+
+    function closePetInfoPopup() {
+        console.log('closePetInfoPopup', popupPetInfoElement)
+        popupPetInfoElement.classList.remove("open-popup-pet-window")
+    }
+    closePetButton.addEventListener("click", closePetInfoPopup)
+}
+
+renderPetList(petsMockData)
+
+const addNewPetButton = document.getElementById("add-new-pet-button")
+

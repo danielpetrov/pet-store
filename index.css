@@ -27,18 +27,23 @@
 
 
 #pet-list {
-    padding: 50px;
     display: inline-flex;
     column-gap: 35px;
     row-gap: 35px;
     justify-content: space-around;
+    width: 100%;
+    justify-content: center;
+    margin-top: 50px;
 }
 
 .new-pet {
     height: 140px;
     width: 240px;
     border: solid 10px #FA7421;
+    border-radius: 8px;
     background-color: white;    
+    text-align: center;
+    
 }
 
 .add-button {
@@ -48,4 +53,81 @@
     border-radius: 50px;
     background-color: #FA7421;
     display: block;
+    margin: auto;
+    margin-top: 50px;
+}
+
+.popup-pet-window {
+    border: solid 10px #FA7421;
+    border-radius: 8px;
+    background-color: white; 
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 400px;
+    height: 550px;
+    text-align: center;
+    padding-top: 30px;
+    visibility: hidden;
+}
+
+.open-popup-pet-window {
+    border: solid 10px #FA7421;
+    border-radius: 8px;
+    background-color: white; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 400px;
+    height: 550px;
+    text-align: center;
+    padding-top: 30px;
+    visibility: visible;
+}
+
+.close-pet {
+    position: absolute;
+    left: 385px;
+    top: -23px;
+    background-color:#6c87e8;
+    border-radius: 50px;
+    height: 40px;
+    width: 40px;
+    border: none;
+}
+
+.close-pet:hover {
+    background-color: #5069c3;
+}
+
+.edit-pet {
+    background-color: #FA7421;
+    position: absolute;
+    top: 490px;
+    left: 125px;
+    height: 40px;
+    width: 70px;
+    border: none;
+    border-radius: 5px;
+}
+
+.edit-pet:hover {
+    background-color: #bc5211;
+}
+
+.delete-pet {
+    background-color: #FA7421;
+    position: absolute;
+    top: 490px;
+    right: 125px;
+    height: 40px;
+    width: 70px;
+    border: none;
+    border-radius: 5px;
+}
+
+.delete-pet:hover {
+    background-color: #bc5211;
 }
