@@ -4,6 +4,7 @@ const petsMockData = [{"petId":42,"petName":"Gosho","addedDate":"2022-10-31","ki
 const petKindsMockData = [{"displayName":"Parrot","value":3}, {"displayName":"Cat","value":1}, {"displayName":"Dog","value":2}]
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
+const blurredDiv  = document.getElementById("blurred-div")
 
 function renderPetList(pets, petKinds) { // TODO: rename
     console.log(pets)
@@ -48,9 +49,11 @@ function renderPetInfoModal() {
 
 function switchLoader(isLoading) {
     if (isLoading === true) {
+        blurredDiv.setAttribute("class", "blurred")
         loader.style.visibility = "visible"
     } else if (isLoading === false) {
         loader.style.visibility = "hidden"
+        blurredDiv.classList.remove("blurred")
     }
     // html isLoading true -> show
 }

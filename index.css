@@ -1,3 +1,15 @@
+body {
+    filter: none
+}
+
+.blurred {
+    filter: blur(10px);
+}
+
+#blurred-div {
+    height: 600px;
+}
+
 .orange-line {
     height: 30px;
     background-color: #FA7421;
@@ -34,6 +46,7 @@
     width: 100%;
     justify-content: center;
     margin-top: 50px;
+    height: 400px;
 }
 
 .pet-card {
@@ -56,6 +69,9 @@
     display: block;
     margin: auto;
     margin-top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 20px;
 }
 
 .popup-pet-window {
@@ -142,6 +158,12 @@
     margin: auto;
     animation: spin 2s linear infinite;
     visibility: hidden;
+    filter: none !important;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 
 @keyframes spin {
