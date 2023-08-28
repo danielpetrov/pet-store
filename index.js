@@ -1,6 +1,6 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors')
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
 
 
 const PORT = 5150;

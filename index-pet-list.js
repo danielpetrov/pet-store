@@ -1,9 +1,13 @@
+import { getAllPetsInfo } from './services.js'
+
 const petsMockData = [{"petId":42,"petName":"Gosho","addedDate":"2022-10-31","kind":1},{"petId":43,"petName":"Pesho","addedDate":"2022-10-25","kind":2},{"petId":44,"petName":"Kenny","addedDate":"2022-10-27","kind":3}]
 const petKindsMockData = [{"displayName":"Parrot","value":3}, {"displayName":"Cat","value":1}, {"displayName":"Dog","value":2}]
 const displayedPets = document.getElementById("pet-list")
+const loader = document.getElementById("loader")
 
 function renderPetList(pets, petKinds) { // TODO: rename
-    for(i = 0; i < pets.length; i++) {
+    console.log(pets)
+    for(let i = 0; i < pets.length; i++) {
         const pet = pets[i]
         const petKindFound = petKinds.find((item) => {
             console.log(item, pet)
@@ -42,7 +46,35 @@ function renderPetInfoModal() {
     closePetButton.addEventListener("click", closePetInfoPopup)
 }
 
-renderPetList(petsMockData, petKindsMockData)
+function switchLoader(isLoading) {
+    if (isLoading === true) {
+        loader.style.visibility = "visible"
+    } else if (isLoading === false) {
+        loader.style.visibility = "hidden"
+    }
+    // html isLoading true -> show
+}
+async function loadPetList () {
+    // start loading -> show loader in HTML
+    try {
+        switchLoader(true)
+
+        const petListData = await getAllPetsInfo()
+        renderPetList(petListData, petKindsMockData)
+    
+        switchLoader(false)
+    } catch (e) {
+        console.error(e)
+    }
+    
+    // stop loading -> hide loader in HTML
+    console.log('do something else after await in function')
+}
+
+
+
+console.log('before the function call')
+loadPetList()
+console.log('do something else outside of the function')
 
 const addNewPetButton = document.getElementById("add-new-pet-button")
-
