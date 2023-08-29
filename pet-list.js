@@ -1,20 +1,18 @@
 import { getAllPetsInfo } from './services.js'
 
-const petsMockData = [{"petId":42,"petName":"Gosho","addedDate":"2022-10-31","kind":1},{"petId":43,"petName":"Pesho","addedDate":"2022-10-25","kind":2},{"petId":44,"petName":"Kenny","addedDate":"2022-10-27","kind":3}]
 const petKindsMockData = [{"displayName":"Parrot","value":3}, {"displayName":"Cat","value":1}, {"displayName":"Dog","value":2}]
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
 const blurredDiv  = document.getElementById("blurred-div")
 
-function renderPetList(pets, petKinds) { // TODO: rename
-    console.log(pets)
+function renderPetList(pets, petKinds) {
     for(let i = 0; i < pets.length; i++) {
         const pet = pets[i]
         const petKindFound = petKinds.find((item) => {
             console.log(item, pet)
             return item.value === pet.kind
         })     
-        const newPetCardElement = document.createElement("div") // TODO: rename
+        const newPetCardElement = document.createElement("div")
         newPetCardElement.setAttribute("class","pet-card")
         newPetCardElement.setAttribute("id", pet.petId)
         newPetCardElement.innerHTML = `
@@ -48,17 +46,16 @@ function renderPetInfoModal() {
 }
 
 function switchLoader(isLoading) {
-    if (isLoading === true) {
+    if (isLoading) {
         blurredDiv.setAttribute("class", "blurred")
         loader.style.visibility = "visible"
-    } else if (isLoading === false) {
+    } else {
         loader.style.visibility = "hidden"
         blurredDiv.classList.remove("blurred")
     }
-    // html isLoading true -> show
 }
+
 async function loadPetList () {
-    // start loading -> show loader in HTML
     try {
         switchLoader(true)
 
@@ -69,15 +66,8 @@ async function loadPetList () {
     } catch (e) {
         console.error(e)
     }
-    
-    // stop loading -> hide loader in HTML
-    console.log('do something else after await in function')
 }
 
-
-
-console.log('before the function call')
 loadPetList()
-console.log('do something else outside of the function')
 
 const addNewPetButton = document.getElementById("add-new-pet-button")

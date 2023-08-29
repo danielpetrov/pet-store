@@ -39,7 +39,9 @@ body {
 
 
 #pet-list {
-    display: inline-flex;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
     column-gap: 35px;
     row-gap: 35px;
     justify-content: space-around;
