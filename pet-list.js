@@ -1,4 +1,4 @@
-import { getAllPetsInfo } from './services.js'
+import { getAllPetsInfo, getPetKinds } from './services.js'
 
 const petKindsMockData = [{"displayName":"Parrot","value":3}, {"displayName":"Cat","value":1}, {"displayName":"Dog","value":2}]
 const displayedPets = document.getElementById("pet-list")
@@ -55,12 +55,19 @@ function switchLoader(isLoading) {
     }
 }
 
-async function loadPetList () {
+// function fetch initial data:
+// petListData && petKindsData
+// return { petListData, petKindsData }
+
+async function loadPetList() {
     try {
         switchLoader(true)
+        const [petListData, petKindsData] = await Promise.all([
+            getAllPetsInfo(),
+            getPetKinds()
+        ])
 
-        const petListData = await getAllPetsInfo()
-        renderPetList(petListData, petKindsMockData)
+        renderPetList(petListData, petKindsData)
     
         switchLoader(false)
     } catch (e) {
