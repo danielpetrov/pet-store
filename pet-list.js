@@ -1,6 +1,5 @@
-import { getAllPetsInfo, getPetKinds } from './services.js'
+import { getAllPetsInfo, getPetKinds, fetchPetDetails } from './services.js'
 
-const petKindsMockData = [{"displayName":"Parrot","value":3}, {"displayName":"Cat","value":1}, {"displayName":"Dog","value":2}]
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
 const blurredDiv  = document.getElementById("blurred-div")
@@ -22,14 +21,50 @@ function renderPetList(pets, petKinds) {
         `
         displayedPets.appendChild(newPetCardElement)
 
-        newPetCardElement.addEventListener('click', renderPetInfoModal)
+        newPetCardElement.addEventListener('click', function() {
+            onPetCardClick(pet.petId, petKindFound)
+        })
     }
 }
 
-function renderPetInfoModal() {
-    const popupPetInfoElement = document.querySelector('#popup-pet')
 
+
+function onPetCardClick(petId, petKind) {
+    const popupPetInfoElement = document.querySelector('#popup-pet')
     popupPetInfoElement.classList.add("open-popup-pet-window")
+    const popupPetDetailsElement = document.createElement("div")
+    popupPetInfoElement.innerHTML = ''
+
+    async function showFetchedPetDetails(petId) {
+        const fetchedPetDetails = await fetchPetDetails(petId)
+
+        const healthStatus = fetchedPetDetails.healthProblems
+        let healthStatEl = ''
+
+        if(healthStatus) {
+            healthStatEl = 'yes'
+        } else {
+            healthStatEl = 'no'
+        }
+
+        if(fetchedPetDetails.notes == undefined) {
+            fetchedPetDetails.notes = 'none'
+        }
+
+        //const popupPetDetailsElement = document.createElement("div")
+        popupPetInfoElement.appendChild(popupPetDetailsElement)
+        popupPetDetailsElement.innerHTML = `
+        <div> Name: ${fetchedPetDetails.petName}</div>
+        <div> Age: ${fetchedPetDetails.age}</div>
+        <div> Kind: ${petKind.displayName}</div>
+        <div> Notes: ${fetchedPetDetails.notes}</div>
+        <div> Health problems: ${healthStatEl}</div>
+        <div> Added date: ${fetchedPetDetails.addedDate}</div>
+        `
+    }
+
+    
+    showFetchedPetDetails(petId)
 
     const closePetButton = document.createElement("button")
     closePetButton.innerHTML = "×"
@@ -41,6 +76,7 @@ function renderPetInfoModal() {
     function closePetInfoPopup() {
         console.log('closePetInfoPopup', popupPetInfoElement)
         popupPetInfoElement.classList.remove("open-popup-pet-window")
+        popupPetDetailsElement.innerHTML = ''
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
 }
@@ -54,10 +90,6 @@ function switchLoader(isLoading) {
         blurredDiv.classList.remove("blurred")
     }
 }
-
-// function fetch initial data:
-// petListData && petKindsData
-// return { petListData, petKindsData }
 
 async function loadPetList() {
     try {

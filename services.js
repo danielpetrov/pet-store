@@ -9,3 +9,9 @@ export async function getPetKinds() {
     const petKindsData = await response.json()
     return petKindsData
 }
+
+export async function fetchPetDetails(petId) {
+    const response = await fetch("http://localhost:5150/pet/" + `${petId}`)
+    const petDetails = await response.json()
+    return petDetails
+}
