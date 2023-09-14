@@ -22,23 +22,20 @@ function renderPetList(pets, petKinds) {
         displayedPets.appendChild(newPetCardElement)
 
         newPetCardElement.addEventListener('click', function() {
-            onPetCardClick(pet.petId, petKindFound)
+            loadPetPopup(pet.petId, petKindFound)
         })
     }
 }
 
 
-
-function onPetCardClick(petId, petKind) {
+function renderPetDetails(petId, petKind, receivedPetDetails) {
     const popupPetInfoElement = document.querySelector('#popup-pet')
     popupPetInfoElement.classList.add("open-popup-pet-window")
     const popupPetDetailsElement = document.createElement("div")
     popupPetInfoElement.innerHTML = ''
 
-    async function showFetchedPetDetails(petId) {
-        const fetchedPetDetails = await fetchPetDetails(petId)
 
-        const healthStatus = fetchedPetDetails.healthProblems
+        const healthStatus = receivedPetDetails.healthProblems
         let healthStatEl = ''
 
         if(healthStatus) {
@@ -47,24 +44,19 @@ function onPetCardClick(petId, petKind) {
             healthStatEl = 'no'
         }
 
-        if(fetchedPetDetails.notes == undefined) {
-            fetchedPetDetails.notes = 'none'
+        if(receivedPetDetails.notes == undefined) {
+            receivedPetDetails.notes = 'none'
         }
 
-        //const popupPetDetailsElement = document.createElement("div")
         popupPetInfoElement.appendChild(popupPetDetailsElement)
         popupPetDetailsElement.innerHTML = `
-        <div> Name: ${fetchedPetDetails.petName}</div>
-        <div> Age: ${fetchedPetDetails.age}</div>
+        <div> Name: ${receivedPetDetails.petName}</div>
+        <div> Age: ${receivedPetDetails.age}</div>
         <div> Kind: ${petKind.displayName}</div>
-        <div> Notes: ${fetchedPetDetails.notes}</div>
+        <div> Notes: ${receivedPetDetails.notes}</div>
         <div> Health problems: ${healthStatEl}</div>
-        <div> Added date: ${fetchedPetDetails.addedDate}</div>
+        <div> Added date: ${receivedPetDetails.addedDate}</div>
         `
-    }
-
-    
-    showFetchedPetDetails(petId)
 
     const closePetButton = document.createElement("button")
     closePetButton.innerHTML = "×"
@@ -108,5 +100,19 @@ async function loadPetList() {
 }
 
 loadPetList()
+
+async function loadPetPopup(petId, petKind) {
+     try {
+         switchLoader(true)
+
+         const receivedPetDetails = await fetchPetDetails(petId)
+         renderPetDetails(petId, petKind, receivedPetDetails)
+
+         switchLoader(false)
+
+     } catch (e) {
+        console.error(e)
+     }
+}
 
 const addNewPetButton = document.getElementById("add-new-pet-button")
