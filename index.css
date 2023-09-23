@@ -151,6 +151,36 @@ body {
     background-color: #bc5211;
 }
 
+.save-pet {
+    background-color: #FA7421;
+    position: absolute;
+    top: 490px;
+    left: 125px;
+    height: 40px;
+    width: 70px;
+    border: none;
+    border-radius: 5px;
+}
+
+.save-pet:hover {
+    background-color: #bc5211;
+}
+
+.cancel-pet {
+    background-color: #FA7421;
+    position: absolute;
+    top: 490px;
+    right: 125px;
+    height: 40px;
+    width: 70px;
+    border: none;
+    border-radius: 5px;
+}
+
+.cancel-pet:hover {
+    background-color: #bc5211;
+}
+
 .loader {
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;

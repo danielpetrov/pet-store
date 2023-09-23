@@ -101,16 +101,21 @@ function renderEditPet(receivedPetDetails, petKind) {
         <label for="pet-age">Age: </label>
         <input type="number" id="pet-age" min="1" max="99" value = '${receivedPetDetails.age}'><br>
         <label for="pet-kind">Kind: </label>
-        <input type="text" value = '${petKind.displayName}'><br>
+        <select name="kinds" id="pet-kind" form="kindform">
+        <option value="1">Cat</option>
+        <option value="2">Dog</option>
+        <option value="3">Parrot</option>
+        <option value="4">Other</option>
+        </select><br>
         <label for="pet-notes">Notes: </label>
-        <input type="textarea" id="pet-notes" value='${receivedPetDetails.notes}'><br>
-        <p>Health problems: </p>
-        <input type="radio" id="yes" name="health_problems">
-        <label for="yes">Yes</label>
-        <input type="radio" id="no" name="health_problems">
-        <label for="no">No</label><br>
+        <textarea id="pet-notes" rows="1" value='${receivedPetDetails.notes}'></textarea><br>
+        <label for="health-problems">Health problems</label>
+        <select name="health-problems" id="health-problems" form="healthstat">
+        <option value="1">Yes</option>
+        <option value="2">No</option>
+        </select><br>
         <label for="added-date"> Added date: </label>
-        <input type="date" value = '${receivedPetDetails.addedDate}'>
+        <input type="date" id="added-date" value = '${receivedPetDetails.addedDate}'>
     </form>
     `
     
@@ -125,6 +130,49 @@ function renderEditPet(receivedPetDetails, petKind) {
         popupPetDetailsElement.innerHTML = ''
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
+
+    const savePetButton = document.createElement("button")
+    savePetButton.innerHTML = "Save"
+    savePetButton.setAttribute("id", "save-pet-button")
+    savePetButton.setAttribute("class", "save-pet")
+    popupPetInfoElement.appendChild(savePetButton)
+
+    function savePetChanges() {
+        const chosenPet = document.getElementById('pet-kind')
+        const chosenHealthStat = document.getElementById('health-problems')
+        popupPetDetailsElement.innerHTML = `
+        <div> Name: ${document.getElementById('pet-name').value}</div>
+        <div> Age: ${document.getElementById('pet-age').value}</div>
+        <div> Kind: ${chosenPet.options[chosenPet.selectedIndex].text}</div>
+        <div> Notes: ${document.getElementById('pet-notes').value}</div>
+        <div> Health problems: ${chosenHealthStat.options[chosenHealthStat.selectedIndex].text}</div>
+        <div> Added date: ${document.getElementById('added-date').value}</div>
+        `
+
+        const editPetButton = document.createElement("button")
+        editPetButton.innerHTML = "Edit"
+        editPetButton.setAttribute("id", "edit-pet-button")
+        editPetButton.setAttribute("class", "edit-pet")
+        popupPetInfoElement.appendChild(editPetButton)
+
+        editPetButton.addEventListener("click", () => {
+        renderEditPet(receivedPetDetails, petKind)
+    })
+
+    const deletePetButton = document.createElement("button")
+    deletePetButton.innerHTML = "Delete"
+    deletePetButton.setAttribute("id", "delete-pet-button")
+    deletePetButton.setAttribute("class", "delete-pet")
+    popupPetInfoElement.appendChild(deletePetButton)
+        
+    }
+    savePetButton.addEventListener("click", savePetChanges)
+
+    const cancelPetButton = document.createElement("button")
+    cancelPetButton.innerHTML = "Cancel"
+    cancelPetButton.setAttribute("id", "cancel-pet-button")
+    cancelPetButton.setAttribute("class", "cancel-pet")
+    popupPetInfoElement.appendChild(cancelPetButton)
 }
 
 function switchLoader(isLoading) {
