@@ -39,11 +39,11 @@ function renderPetDetails(petKind, receivedPetDetails) {
     const healthStatus = receivedPetDetails.healthProblems
     let healthStatEl = ''
 
-    if(healthStatus) {
-        healthStatEl = 'yes'
-    } else {
-        healthStatEl = 'no'
-    }
+    // if(healthStatus) {
+    //     healthStatEl == true
+    // } else {
+    //     healthStatEl == false
+    // }
 
     if(receivedPetDetails.notes == undefined) {
         receivedPetDetails.notes = 'none'
@@ -55,7 +55,7 @@ function renderPetDetails(petKind, receivedPetDetails) {
     <div> Age: ${receivedPetDetails.age}</div>
     <div> Kind: ${petKind.displayName}</div>
     <div> Notes: ${receivedPetDetails.notes}</div>
-    <div> Health problems: ${healthStatEl}</div>
+    <div> Health problems: <input type="checkbox" checked="${healthStatus}" disabled></div>
     <div> Added date: ${receivedPetDetails.addedDate}</div>
     `
     
@@ -94,15 +94,17 @@ function renderEditPet(receivedPetDetails, petKind) {
     const popupPetDetailsElement = document.createElement("div")
     popupPetInfoElement.innerHTML = ''
 
+
     popupPetInfoElement.appendChild(popupPetDetailsElement)
     popupPetDetailsElement.innerHTML = `
-    <form>
+    <form id="edit-form">
         <label for="pet-name">Name: </label>
-        <input type="text" id="pet-name" value='${receivedPetDetails.petName}'><br>
+        <input type="text" id="pet-name" value='${receivedPetDetails.petName}' required><br>
         <label for="pet-age">Age: </label>
         <input type="number" id="pet-age" min="1" max="99" value = '${receivedPetDetails.age}'><br>
         <label for="pet-kind">Kind: </label>
         <select name="kinds" id="pet-kind" form="kindform">
+        <option value='${receivedPetDetails.kind}' selected disabled hidden>${petKind.displayName}</option>
         <option value="1">Cat</option>
         <option value="2">Dog</option>
         <option value="3">Parrot</option>
@@ -110,13 +112,11 @@ function renderEditPet(receivedPetDetails, petKind) {
         </select><br>
         <label for="pet-notes">Notes: </label>
         <textarea id="pet-notes" rows="1" value='${receivedPetDetails.notes}'></textarea><br>
-        <label for="health-problems">Health problems</label>
-        <select name="health-problems" id="health-problems" form="healthstat">
-        <option value="1">Yes</option>
-        <option value="2">No</option>
-        </select><br>
+        <label for="health-problems">Health problems:</label>
+        <input type="checkbox" id="health-problems" checked="${receivedPetDetails.healthProblems}" /><br>
         <label for="added-date"> Added date: </label>
         <input type="date" id="added-date" value = '${receivedPetDetails.addedDate}'>
+        <button type="submit" id="save-pet-button" class="save-pet">Save</button>
     </form>
     `
     
@@ -132,19 +132,39 @@ function renderEditPet(receivedPetDetails, petKind) {
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
 
-    const savePetButton = document.createElement("button")
-    savePetButton.innerHTML = "Save"
-    savePetButton.setAttribute("id", "save-pet-button")
-    savePetButton.setAttribute("class", "save-pet")
-    popupPetInfoElement.appendChild(savePetButton)
+    // const savePetButton = document.createElement("button")
+    // savePetButton.innerHTML = "Save"
+    // savePetButton.setAttribute("id", "save-pet-button")
+    // savePetButton.setAttribute("class", "save-pet")
+    // popupPetInfoElement.appendChild(savePetButton)
+    //const savePetButton = document.getElementById("save-pet-button")
+    const editForm = document.getElementById("edit-form")
+    editForm.addEventListener("submit", function() {
+        let healthProblemsStatus = false
+        if(receivedPetDetails.healthProblems) {
+            healthProblemsStatus = document.getElementById('health-problems').checked
+        }
+        // const healthProblemsStatus = document.getElementById('health-problems').checked
+        // if (healthProblemsStatus == false) {
+        //     healthProblemsStatus = ''
+        // }
 
-    savePetButton.addEventListener("click", function() {
+        function validate() {
+            if(editForm.Name.value === "") {
+                editForm.Name.focus()
+                return false
+            }
+            return ( true )
+        }
+        validate()
+
+        
         const dataToUpdate = {
             petName: `${document.getElementById("pet-name").value.trim()}`,
             age: `${document.getElementById('pet-age').value}`,
             notes: `${document.getElementById('pet-notes').value.trim()}`,
             kind: Number(`${document.getElementById('pet-kind').value}`),
-            healthProblems:`${receivedPetDetails.healthProblems}`,
+            healthProblems: `${healthProblemsStatus}`,
             addedDate: `${document.getElementById('added-date').value}`,
         }
 
