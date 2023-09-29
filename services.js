@@ -15,3 +15,15 @@ export async function fetchPetDetails(petId) {
     const petDetails = await response.json()
     return petDetails
 }
+
+export async function updatePetDetails(petId, dataToUpdate) {
+    const response = await fetch("http://localhost:5150/pet/" + `${petId}`, {
+        method: "PUT",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(dataToUpdate)
+    })
+    const newPetDetails = await response.json()
+    return newPetDetails
+}

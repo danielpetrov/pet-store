@@ -1,14 +1,15 @@
-import { getAllPetsInfo, getPetKinds, fetchPetDetails } from './services.js'
+import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails } from './services.js'
 
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
 const blurredDiv  = document.getElementById("blurred-div")
 
 function renderPetList(pets, petKinds) {
+    displayedPets.innerHTML = ''
     for(let i = 0; i < pets.length; i++) {
         const pet = pets[i]
         const petKindFound = petKinds.find((item) => {
-            console.log(item, pet)
+            console.log(pet.kind)
             return item.value === pet.kind
         })     
         const newPetCardElement = document.createElement("div")
@@ -28,7 +29,7 @@ function renderPetList(pets, petKinds) {
 }
 
 
-function renderPetDetails(petId, petKind, receivedPetDetails) {
+function renderPetDetails(petKind, receivedPetDetails) {
     const popupPetInfoElement = document.querySelector('#popup-pet')
     popupPetInfoElement.classList.add("open-popup-pet-window")
     const popupPetDetailsElement = document.createElement("div")
@@ -137,36 +138,18 @@ function renderEditPet(receivedPetDetails, petKind) {
     savePetButton.setAttribute("class", "save-pet")
     popupPetInfoElement.appendChild(savePetButton)
 
-    function savePetChanges() {
-        const chosenPet = document.getElementById('pet-kind')
-        const chosenHealthStat = document.getElementById('health-problems')
-        popupPetDetailsElement.innerHTML = `
-        <div> Name: ${document.getElementById('pet-name').value}</div>
-        <div> Age: ${document.getElementById('pet-age').value}</div>
-        <div> Kind: ${chosenPet.options[chosenPet.selectedIndex].text}</div>
-        <div> Notes: ${document.getElementById('pet-notes').value}</div>
-        <div> Health problems: ${chosenHealthStat.options[chosenHealthStat.selectedIndex].text}</div>
-        <div> Added date: ${document.getElementById('added-date').value}</div>
-        `
+    savePetButton.addEventListener("click", function() {
+        const dataToUpdate = {
+            petName: `${document.getElementById("pet-name").value.trim()}`,
+            age: `${document.getElementById('pet-age').value}`,
+            notes: `${document.getElementById('pet-notes').value.trim()}`,
+            kind: Number(`${document.getElementById('pet-kind').value}`),
+            healthProblems:`${receivedPetDetails.healthProblems}`,
+            addedDate: `${document.getElementById('added-date').value}`,
+        }
 
-        const editPetButton = document.createElement("button")
-        editPetButton.innerHTML = "Edit"
-        editPetButton.setAttribute("id", "edit-pet-button")
-        editPetButton.setAttribute("class", "edit-pet")
-        popupPetInfoElement.appendChild(editPetButton)
-
-        editPetButton.addEventListener("click", () => {
-        renderEditPet(receivedPetDetails, petKind)
+        submitEditPet(receivedPetDetails, dataToUpdate, petKind)
     })
-
-    const deletePetButton = document.createElement("button")
-    deletePetButton.innerHTML = "Delete"
-    deletePetButton.setAttribute("id", "delete-pet-button")
-    deletePetButton.setAttribute("class", "delete-pet")
-    popupPetInfoElement.appendChild(deletePetButton)
-        
-    }
-    savePetButton.addEventListener("click", savePetChanges)
 
     const cancelPetButton = document.createElement("button")
     cancelPetButton.innerHTML = "Cancel"
@@ -208,13 +191,29 @@ async function loadPetPopup(petId, petKind) {
          switchLoader(true)
 
          const receivedPetDetails = await fetchPetDetails(petId)
-         renderPetDetails(petId, petKind, receivedPetDetails)
+
+         renderPetDetails(petKind, receivedPetDetails)
 
          switchLoader(false)
 
      } catch (e) {
         console.error(e)
      }
+}
+
+async function submitEditPet(receivedPetDetails, dataToUpdate, petKind) {
+    try {
+        switchLoader(true)
+
+        const updatedPetDetails = await updatePetDetails(receivedPetDetails.petId, dataToUpdate)
+        renderPetDetails(petKind, updatedPetDetails)
+        loadPetList()
+
+        switchLoader(false)
+
+    } catch (e) {
+       console.error(e)
+    }
 }
 
 const addNewPetButton = document.getElementById("add-new-pet-button")
