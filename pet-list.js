@@ -2,7 +2,8 @@ import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails, postPet
 
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
-const blurredDiv  = document.getElementById("blurred-div")
+const loaderPortal  = document.getElementById("loader-portal")
+const blurredDiv = document.getElementById("blurred-div")
 
 function renderPetList(pets, petKinds) {
     displayedPets.innerHTML = ''
@@ -16,9 +17,9 @@ function renderPetList(pets, petKinds) {
         newPetCardElement.setAttribute("class","pet-card")
         newPetCardElement.setAttribute("id", pet.petId)
         newPetCardElement.innerHTML = `
-            <div class="pet-card-name">Name: ${pet.petName}</div> 
-            <div class="pet-card-kind">Kind: ${petKindFound.displayName}</div>
-            <div class="pet-card-date">Added Date: ${pet.addedDate}</div>
+            <div class="pet-card-name pet-card-details">Name: ${pet.petName}</div> 
+            <div class="pet-card-kind pet-card-details">Kind: ${petKindFound.displayName}</div>
+            <div class="pet-card-date pet-card-details">Added Date: ${pet.addedDate}</div>
         `
         displayedPets.appendChild(newPetCardElement)
 
@@ -30,11 +31,11 @@ function renderPetList(pets, petKinds) {
 
 
 function renderPetDetails(petKind, receivedPetDetails) {
+    blurredDiv.setAttribute("class", "blurred")
     const popupPetInfoElement = document.querySelector('#popup-pet')
     popupPetInfoElement.classList.add("open-popup-pet-window")
     const popupPetDetailsElement = document.createElement("div")
     popupPetInfoElement.innerHTML = ''
-
 
     const healthStatus = receivedPetDetails.healthProblems
     let healthStatEl = ''
@@ -68,6 +69,7 @@ function renderPetDetails(petKind, receivedPetDetails) {
     function closePetInfoPopup() {
         popupPetInfoElement.classList.remove("open-popup-pet-window")
         popupPetDetailsElement.innerHTML = ''
+        blurredDiv.classList.remove("blurred")
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
 
@@ -129,6 +131,7 @@ function renderEditPet(receivedPetDetails, petKind) {
     function closePetInfoPopup() {
         popupPetInfoElement.classList.remove("open-popup-pet-window")
         popupPetDetailsElement.innerHTML = ''
+        blurredDiv.classList.remove("blurred")
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
 
@@ -161,11 +164,11 @@ function renderEditPet(receivedPetDetails, petKind) {
 
 function switchLoader(isLoading) {
     if (isLoading) {
-        blurredDiv.setAttribute("class", "blurred")
+        loaderPortal.setAttribute("class", "blurred")
         loader.style.visibility = "visible"
     } else {
         loader.style.visibility = "hidden"
-        blurredDiv.classList.remove("blurred")
+        loaderPortal.classList.remove("blurred")
     }
 }
 
@@ -220,6 +223,7 @@ async function submitEditPet(receivedPetDetails, dataToUpdate, petKind) {
 const addNewPetButton = document.getElementById("add-new-pet-button")
 
 function createNewPet() {
+    blurredDiv.setAttribute("class", "blurred")
     const popupPetInfoElement = document.querySelector('#popup-pet')
     popupPetInfoElement.classList.add("open-popup-pet-window")
     const popupPetDetailsElement = document.createElement("div")
@@ -277,6 +281,7 @@ function createNewPet() {
     function closePetInfoPopup() {
         popupPetInfoElement.classList.remove("open-popup-pet-window")
         popupPetDetailsElement.innerHTML = ''
+        blurredDiv.classList.remove("blurred")
     }
     closePetButton.addEventListener("click", closePetInfoPopup)
 

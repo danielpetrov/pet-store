@@ -1,5 +1,5 @@
 body {
-    filter: none
+    filter: none;
 }
 
 .blurred {
@@ -22,7 +22,7 @@ body {
 }
 
 .blue-line {
-    background-color: #7C99FF;
+    background-color: #d6dfff;
     height: 100px;
     width: 100vw;
     position: relative; 
@@ -30,11 +30,17 @@ body {
     left: 50%;
     margin-left: -50vw;
     text-align: center;
+    padding-bottom: 40px;
 }
 
 .header {
    display: flex;
    flex-direction: column;
+  
+}
+
+#petstore-logo {
+    width: 750px;
 }
 
 
@@ -60,6 +66,20 @@ body {
     border-radius: 8px;
     background-color: white;
     padding: 10px;
+    font-family: Arial, Helvetica, sans-serif;
+    transition: .3s ease;
+}
+
+.pet-card:hover {
+    transform: scale(1.08);
+    -webkit-transform: scale(1.08);
+    -ms-transform: scale(1.08);
+}
+
+.pet-card-details {
+    margin-top: 20px;
+    size: 15px;
+    padding-left: 10px;
 }
 
 .add-button {
@@ -74,6 +94,15 @@ body {
     left: 0;
     right: 0;
     bottom: 20px;
+    transition: .3s ease;
+    font-size: 18px;
+}
+
+.add-button:hover {
+    background-color: #bc5211;
+    transform: scale(1.08);
+    -webkit-transform: scale(1.08);
+    -ms-transform: scale(1.08);
 }
 
 .popup-pet-window {
@@ -104,6 +133,7 @@ body {
     text-align: center;
     padding-top: 30px;
     visibility: visible;
+    backdrop-filter: blur(10px);
 }
 
 .close-pet {
@@ -202,4 +232,3 @@ body {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-

@@ -8,23 +8,24 @@
     <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div id="blurred-div">
-    <div class="header"> 
-        <div class="orange-line"></div>
-        <div class="blue-line">
-            <h1>PET STORE</h1>
-        </div>
-    </div>
-    
-    <div id="pet-list"></div>
+    <div id="loader-portal">
+        <div id="blurred-div">
+            <div class="header"> 
+                <div class="orange-line"></div>
+                <div class="blue-line">
+                    <img id="petstore-logo" src="https://scontent.xx.fbcdn.net/v/t1.15752-9/382261428_184418701353664_341320703649910821_n.png?_nc_cat=105&ccb=1-7&_nc_sid=aee45a&_nc_ohc=a9nL9EKdmy4AX8uLh9B&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQn6BGUYOaK9w9aKOM6nFUtEA8lh5GF9Rn56MhABtWYyw&oe=6543B125" alt="petstore">
+                </div>
+            </div>
         
-    <div class="popup-pet-window"id="popup-pet"></div>
-    
-    <button class="add-button" id="add-new-pet-button">+</button>
+            <div id="pet-list"></div>
+        
+            <button class="add-button" id="add-new-pet-button">+</button>
+        </div>
+
+        <div class="popup-pet-window"id="popup-pet"></div>
     </div>
-
     <div class="loader" id="loader"></div>
-
+    
     <script type="module" src="pet-list.js"></script>
 </body>
 </html>
