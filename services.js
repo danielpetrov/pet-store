@@ -27,3 +27,15 @@ export async function updatePetDetails(petId, dataToUpdate) {
     const newPetDetails = await response.json()
     return newPetDetails
 }
+
+export async function postPetDetails(dataToPost) {
+    const response = await fetch("http://localhost:5150/pet" , {
+        method: "POST",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        body: JSON.stringify(dataToPost)
+    })
+    const addPetDetails = await response.json()
+    return addPetDetails
+}

@@ -1,4 +1,4 @@
-import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails } from './services.js'
+import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails, postPetDetails} from './services.js'
 
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
@@ -155,6 +155,8 @@ function renderEditPet(receivedPetDetails, petKind) {
     cancelPetButton.setAttribute("id", "cancel-pet-button")
     cancelPetButton.setAttribute("class", "cancel-pet")
     popupPetInfoElement.appendChild(cancelPetButton)
+
+    // add cancel button function
 }
 
 function switchLoader(isLoading) {
@@ -176,10 +178,10 @@ async function loadPetList() {
         ])
 
         renderPetList(petListData, petKindsData)
-    
-        switchLoader(false)
     } catch (e) {
         console.error(e)
+    } finally {
+        switchLoader(false)
     }
 }
 
@@ -216,3 +218,91 @@ async function submitEditPet(receivedPetDetails, dataToUpdate, petKind) {
 }
 
 const addNewPetButton = document.getElementById("add-new-pet-button")
+
+function createNewPet() {
+    const popupPetInfoElement = document.querySelector('#popup-pet')
+    popupPetInfoElement.classList.add("open-popup-pet-window")
+    const popupPetDetailsElement = document.createElement("div")
+    popupPetInfoElement.innerHTML = ''
+    popupPetInfoElement.appendChild(popupPetDetailsElement)
+
+    popupPetDetailsElement.innerHTML = `
+    <form id="edit-form">
+        <label for="pet-name">Name: </label>
+        <input type="text" id="pet-name" value="" placeholdet="e.g. Max" required><br>
+        <label for="pet-age" placeholder=1>Age: </label>
+        <input type="number" id="pet-age" min="1" max="99" value = ""><br>
+        <label for="pet-kind">Kind: </label>
+        <select name="kinds" id="pet-kind" form="kindform">
+        <option value="0" selected disabled hidden></option>
+        <option value="1">Cat</option>
+        <option value="2">Dog</option>
+        <option value="3">Parrot</option>
+        <option value="4">Other</option>
+        </select><br>
+        <label for="pet-notes">Notes: </label>
+        <textarea id="pet-notes" rows="1" value=""></textarea><br>
+        <label for="health-problems">Health problems:</label>
+        <input type="checkbox" id="health-problems" /><br>
+        <label for="added-date"> Added date: </label>
+        <input type="date" id="added-date" value="">
+        <button type="submit" id="save-pet-button" class="save-pet">Save</button>
+    </form>
+    `
+    const editForm = document.getElementById("edit-form")
+    editForm.addEventListener("submit", function(e) {
+        console.log(editForm)
+        e.preventDefault()
+        editForm.checkValidity()
+        
+        const dataToPost = {
+            petName: `${document.getElementById("pet-name").value.trim()}`,
+            age: `${document.getElementById('pet-age').value}`,
+            notes: `${document.getElementById('pet-notes').value.trim()}`,
+            kind: Number(`${document.getElementById('pet-kind').value}`),
+            healthProblems: Boolean(document.getElementById("health-problems").checked),
+            addedDate: `${document.getElementById('added-date').value}`,
+        }
+
+        submitNewPet(dataToPost)
+    })
+
+
+    const closePetButton = document.createElement("button")
+    closePetButton.innerHTML = "×"
+    closePetButton.setAttribute("id", "close-pet-button")
+    closePetButton.setAttribute("class", "close-pet")
+    popupPetInfoElement.appendChild(closePetButton)
+
+    function closePetInfoPopup() {
+        popupPetInfoElement.classList.remove("open-popup-pet-window")
+        popupPetDetailsElement.innerHTML = ''
+    }
+    closePetButton.addEventListener("click", closePetInfoPopup)
+
+    const cancelPetButton = document.createElement("button")
+    cancelPetButton.innerHTML = "Cancel"
+    cancelPetButton.setAttribute("id", "cancel-pet-button")
+    cancelPetButton.setAttribute("class", "cancel-pet")
+    popupPetInfoElement.appendChild(cancelPetButton)
+    
+}
+addNewPetButton.addEventListener("click", createNewPet)
+
+async function submitNewPet(dataToPost) {
+    try {
+        switchLoader(true)
+
+        const createdPetDetails = await postPetDetails(dataToPost)
+        renderPetDetails(dataToPost.kind, createdPetDetails)
+        const popupPetInfoElement = document.querySelector('#popup-pet')
+        popupPetInfoElement.classList.remove("open-popup-pet-window")
+        // close form
+        await loadPetList()
+    } catch (e) {
+        // add error message in form
+       console.error(e)
+    } finally {
+        switchLoader(false)
+    }
+}
