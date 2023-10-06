@@ -1,9 +1,10 @@
-import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails, postPetDetails} from './services.js'
+import { getAllPetsInfo, getPetKinds, fetchPetDetails, updatePetDetails, postPetDetails, deletePetData} from './services.js'
 
 const displayedPets = document.getElementById("pet-list")
 const loader = document.getElementById("loader")
 const loaderPortal  = document.getElementById("loader-portal")
 const blurredDiv = document.getElementById("blurred-div")
+const confirmationPopup = document.getElementById("confirm-decision")
 
 function renderPetList(pets, petKinds) {
     displayedPets.innerHTML = ''
@@ -88,6 +89,27 @@ function renderPetDetails(petKind, receivedPetDetails) {
     deletePetButton.setAttribute("id", "delete-pet-button")
     deletePetButton.setAttribute("class", "delete-pet")
     popupPetInfoElement.appendChild(deletePetButton)
+
+    deletePetButton.addEventListener("click", function() {
+        confirmationPopup.innerHTML = `
+        Are you sure you want to delete ${receivedPetDetails.petName}?
+            <button class="decision-yes" id="yes-delete">Yes</button>
+            <button class="decision-no" id="do-not-delete">No</button>
+        `
+        confirmationPopup.classList.add("open-confirmation-popup")
+        const yesButton = document.getElementById("yes-delete")
+
+        yesButton.addEventListener("click", function() {
+            deletePet(receivedPetDetails.petId)
+        })
+
+        const noButton = document.getElementById("do-not-delete")
+        noButton.addEventListener("click", function() {
+            confirmationPopup.classList.remove("open-confirmation-popup")
+        })
+        
+        //deletePet(receivedPetDetails.petId)
+    })
 }
 
 function renderEditPet(receivedPetDetails, petKind) {
@@ -159,7 +181,9 @@ function renderEditPet(receivedPetDetails, petKind) {
     cancelPetButton.setAttribute("class", "cancel-pet")
     popupPetInfoElement.appendChild(cancelPetButton)
 
-    // add cancel button function
+    cancelPetButton.addEventListener("click", function() {
+        renderPetDetails(petKind, receivedPetDetails)
+    })
 }
 
 function switchLoader(isLoading) {
@@ -290,6 +314,12 @@ function createNewPet() {
     cancelPetButton.setAttribute("id", "cancel-pet-button")
     cancelPetButton.setAttribute("class", "cancel-pet")
     popupPetInfoElement.appendChild(cancelPetButton)
+
+    cancelPetButton.addEventListener("click", function() {
+        popupPetInfoElement.classList.remove("open-popup-pet-window")
+        popupPetDetailsElement.innerHTML = ''
+        blurredDiv.classList.remove("blurred")
+    })
     
 }
 addNewPetButton.addEventListener("click", createNewPet)
@@ -309,5 +339,26 @@ async function submitNewPet(dataToPost) {
        console.error(e)
     } finally {
         switchLoader(false)
+        blurredDiv.classList.remove("blurred")
+    }
+}
+
+async function deletePet(petId) {
+    try {
+        switchLoader(true)
+
+        const deletedData = await deletePetData(petId)
+        console.log(deletePetData)
+        await loadPetList()
+    } catch (e) {
+        // add error message in form
+       console.error(e)
+    } finally {
+        switchLoader(false)
+        blurredDiv.classList.remove("blurred")
+        const popupPetInfoElement = document.querySelector('#popup-pet')
+        popupPetInfoElement.classList.remove("open-popup-pet-window")
+        const confirmationPopup = document.getElementById("confirm-decision")
+        confirmationPopup.classList.remove("open-confirmation-popup")
     }
 }

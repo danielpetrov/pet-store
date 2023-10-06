@@ -211,6 +211,69 @@ body {
     background-color: #bc5211;
 }
 
+.confirmation-popup {
+    border: solid 10px #FA7421;
+    border-radius: 8px;
+    background-color: white; 
+    position: absolute;
+    top: 0%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.1);
+    width: 240px;
+    height: 120px;
+    text-align: center;
+    padding-top: 30px;
+    visibility: hidden;
+}
+
+.open-confirmation-popup {
+    border: solid 8px #FA7421;
+    border-radius: 6px;
+    background-color: white; 
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    width: 240px;
+    height: 140px;
+    text-align: center;
+    padding-top: 10px;
+    visibility: visible;
+    z-index: +1;
+}
+
+.decision-yes {
+    background-color: #FA7421;
+    position: absolute;
+    top: 102px;
+    left: 65px;
+    height: 35px;
+    width: 50px;
+    border: none;
+    border-radius: 5px;
+    z-index: +1;
+}
+
+.decision-yes:hover {
+    background-color: #bc5211;
+}
+
+.decision-no {
+    background-color: #FA7421;
+    position: absolute;
+    top: 102px;
+    right: 65px;
+    height: 35px;
+    width: 50px;
+    border: none;
+    border-radius: 5px;
+    z-index: +1;
+}
+
+.decision-no:hover {
+    background-color: #bc5211;
+}
+
 .loader {
     border: 16px solid #f3f3f3;
     border-top: 16px solid #3498db;

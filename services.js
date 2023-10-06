@@ -39,3 +39,15 @@ export async function postPetDetails(dataToPost) {
     const addPetDetails = await response.json()
     return addPetDetails
 }
+
+export async function deletePetData(petId) {
+    const response = await fetch("http://localhost:5150/pet/" + `${petId}`, {
+        method: "DELETE",
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        },
+        //body: JSON.stringify()
+    })
+    const deletedPetData = await response.json()
+    return deletedPetData
+}
